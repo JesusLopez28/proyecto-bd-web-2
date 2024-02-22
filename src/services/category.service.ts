@@ -43,6 +43,38 @@ class CategoryService {
     if (!category) {
       throw boom.notFound('Category not found')
     }
+
+    return category
+  }
+
+  async updateById(id: string, updatedCategoryData: Category) {
+    const updatedCategory = await Categories.findByIdAndUpdate(
+      id,
+      updatedCategoryData,
+      { new: true }
+    ).catch((error) => {
+      console.log('Error while connecting to the DB', error)
+    })
+
+    if (!updatedCategory) {
+      throw boom.notFound('Category not found')
+    }
+
+    return updatedCategory
+  }
+
+  async deleteById(id: string) {
+    const deletedCategory = await Categories.findByIdAndDelete(id).catch(
+      (error) => {
+        console.log('Error while connecting to the DB', error)
+      }
+    )
+
+    if (!deletedCategory) {
+      throw boom.notFound('Category not found')
+    }
+
+    return deletedCategory
   }
 }
 

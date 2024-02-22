@@ -30,10 +30,28 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.get('/', async (req, res, next) => {
+router.get('/searchByName/:name', async (req, res, next) => {
   try {
-    const category = await service.findById(req.query.name as string)
+    const category = await service.findByName(req.params.name as string)
     res.status(200).json(category)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/:id', async (req, res, next) => {
+  try {
+    const updatedCategory = await service.updateById(req.params.id, req.body)
+    res.status(200).json(updatedCategory)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const deletedCategory = await service.deleteById(req.params.id)
+    res.status(200).json(deletedCategory)
   } catch (error) {
     next(error)
   }
