@@ -2,7 +2,6 @@ import express from 'express'
 import { Product } from '../types/product.type'
 import ProductService from '../services/product.service'
 import passport from 'passport'
-import { JwtRequestType } from '../types/category.type'
 import { ObjectId } from 'mongoose'
 
 const router = express.Router()
@@ -11,22 +10,20 @@ const service = new ProductService()
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  async (req: JwtRequestType, res) => {
-    const {
-      category: { sub }
-    } = req
+  async (req, res) => {
+    const { categoryId } = req.body; 
 
-    const product: Product = req.body
-    const newProduct = await service.create(product, sub as unknown as ObjectId)
+    const product: Product = req.body;
+    const newProduct = await service.create(product, categoryId as unknown as ObjectId);
 
-    res.status(201).json(newProduct)
+    res.status(201).json(newProduct);
   }
-)
+);
 
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  async (req: JwtRequestType, res, next) => {
+  async (req, res, next) => {
     try {
       const products = await service.findAll()
       res.status(200).json(products)
