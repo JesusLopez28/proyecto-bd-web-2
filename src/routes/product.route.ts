@@ -4,7 +4,6 @@ import ProductService from '../services/product.service'
 import passport from 'passport'
 import { JwtRequestType } from '../types/category.type'
 import { ObjectId } from 'mongoose'
-import e from 'express'
 
 const router = express.Router()
 const service = new ProductService()
