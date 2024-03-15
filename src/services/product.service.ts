@@ -69,6 +69,39 @@ class ProductService {
 
     return products
   }
+
+  async findByPriceRange(min, max) {
+    try {
+      if (isNaN(min) || isNaN(max) || min > max) {
+        throw boom.badRequest('Invalid price range')
+      }
+
+      const products = await Products.find({
+        price: { $gte: min, $lte: max }
+      })
+
+      if (!products.length) {
+        throw boom.notFound('No products found in the given price range')
+      }
+
+      return products
+    } catch (error) {
+      console.error('Error while finding products:', error)
+      throw boom.internal('Internal server error')
+    }
+  }
+
+  async delete(id: string) {
+    const product = await Products.findByIdAndDelete(id).catch((error) => {
+      console.log('Error while connecting to the DB', error)
+    })
+
+    if (!product) {
+      throw boom.notFound('Product not found')
+    }
+
+    return product
+  }
 }
 
 export default ProductService
