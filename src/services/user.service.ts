@@ -26,6 +26,18 @@ class UserService {
     return newUser
   }
 
+  async findAll() {
+    const users = await Users.find().catch((error) => {
+      console.log('Error while connecting to the DB', error)
+    })
+
+    if (!users) {
+      throw boom.notFound('There are not users')
+    }
+
+    return users
+  }
+
   async findByEmail(email: string) {
     const user = await Users.findOne({ email }).catch((error) => {
       console.log('Could not retrieve user info', error)

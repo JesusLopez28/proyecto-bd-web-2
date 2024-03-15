@@ -1,6 +1,7 @@
 import express from 'express'
 import { User, UserModel } from '../types/user.type'
 import UserService from '../services/user.service'
+import passport from 'passport'
 import boom from '@hapi/boom'
 
 const router = express.Router()
@@ -17,16 +18,33 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.get('/', async (req, res, next) => {
-  try {
-    const { email } = req.query
-    const user = await service.findByEmail(email as string)
-    console.log({ user })
-
-    res.status(200).json({ user })
-  } catch (error) {
-    next(error)
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const users = await service.findAll()
+      res.status(200).json(users)
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
+
+router.get(
+  '/findByEmail/:email',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const { email } = req.query
+      const user = await service.findByEmail(email as string)
+      console.log({ user })
+
+      res.status(200).json({ user })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 export default router
