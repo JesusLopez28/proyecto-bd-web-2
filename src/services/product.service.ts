@@ -102,6 +102,18 @@ class ProductService {
 
     return product
   }
+
+  async findSecondProduct() {
+    const products = await Products.find().catch((error) => {
+      console.log('Error while connecting to the DB', error)
+    })
+
+    if (!products) {
+      throw boom.notFound('There are not products')
+    }
+
+    return products[1]
+  }
 }
 
 export default ProductService

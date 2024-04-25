@@ -8,6 +8,15 @@ import { parse } from 'dotenv'
 const router = express.Router()
 const service = new ProductService()
 
+router.get('/findSecondProduct', async (req, res, next) => {
+  try {
+    const product = await service.findSecondProduct()
+    res.status(200).json(product)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
@@ -98,7 +107,6 @@ router.get(
   }
 )
 
-//Borrar producto
 router.delete(
   '/:id',
   passport.authenticate('jwt', { session: false }),
