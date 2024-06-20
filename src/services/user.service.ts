@@ -87,7 +87,6 @@ class UserService {
 
     return deletedUser
   }
-
 }
 
 export default UserService
