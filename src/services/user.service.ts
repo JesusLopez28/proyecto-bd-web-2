@@ -49,6 +49,45 @@ class UserService {
 
     return user
   }
+
+  async findById(id: string) {
+    const user = await Users.findById(id).catch((error) => {
+      console.log('Could not retrieve user info', error)
+    })
+
+    if (!user) {
+      throw boom.notFound('User not found')
+    }
+
+    return user
+  }
+
+  async update(id: string, user: Partial<User>) {
+    const updatedUser = await Users.findByIdAndUpdate(id, user, {
+      new: true
+    }).catch((error) => {
+      console.log('Could not update user info', error)
+    })
+
+    if (!updatedUser) {
+      throw boom.notFound('User not found')
+    }
+
+    return updatedUser
+  }
+
+  async delete(id: string) {
+    const deletedUser = await Users.findByIdAndDelete(id).catch((error) => {
+      console.log('Could not delete user', error)
+    })
+
+    if (!deletedUser) {
+      throw boom.notFound('User not found')
+    }
+
+    return deletedUser
+  }
+
 }
 
 export default UserService

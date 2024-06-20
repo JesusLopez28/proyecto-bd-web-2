@@ -120,4 +120,30 @@ router.delete(
   }
 )
 
+router.put(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const product = await service.update(req.params.id, req.body)
+      res.status(200).json(product)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+router.patch(
+  '/updateStock/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const product = await service.updateStock(req.params.id, req.body.stock)
+      res.status(200).json(product)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
 export default router

@@ -114,6 +114,36 @@ class ProductService {
 
     return products[1]
   }
+
+  async update(id: string, product: Product) {
+    const updatedProduct = await Products.findByIdAndUpdate(id, product, {
+      new: true
+    }).catch((error) => {
+      console.log('Error while connecting to the DB', error)
+    })
+
+    if (!updatedProduct) {
+      throw boom.notFound('Product not found')
+    }
+
+    return updatedProduct
+  }
+
+  async updateStock(id: string, stock: number) {
+    const updatedProduct = await Products.findByIdAndUpdate(
+      id,
+      { stock },
+      { new: true }
+    ).catch((error) => {
+      console.log('Error while connecting to the DB', error)
+    })
+
+    if (!updatedProduct) {
+      throw boom.notFound('Product not found')
+    }
+
+    return updatedProduct
+  }
 }
 
 export default ProductService

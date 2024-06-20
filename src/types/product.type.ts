@@ -1,5 +1,6 @@
-import type { Model } from "mongoose";
+import type { Model, ObjectId } from "mongoose";
 import { Category } from "./category.type";
+import e from "express";
 
 export type Product = {
   id?: string;
@@ -8,6 +9,19 @@ export type Product = {
   price: number;
   stock: number;
   category: Category;
+};
+
+export type ProductInCart = {
+  product: ObjectId;
+  quantity: number;
+};
+
+export type ProductRequestType = e.Request & {
+  product: Product;
+};
+
+export type ProductMethods = {
+  toClient: () => Product;
 };
 
 export type ProductModel = Model<Product>;

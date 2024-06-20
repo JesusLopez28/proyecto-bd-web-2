@@ -20,6 +20,10 @@ const Products = new Schema<Product, ProductModel>({
   category: {
     type: Schema.Types.ObjectId,
     ref: CATEGORY_REFERENCE
+  },
+  stock: {
+    type: Number,
+    required: true
   }
 })
 
